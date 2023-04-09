@@ -1,101 +1,113 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Consulta de CEP</title>
-	<meta charset="utf-8">
-    <style>
-		body {
-			font-family: Arial, sans-serif;
-			background-color: #f4f4f4;
-		}
-
+	<title>Exemplo de consumo de API do ViaCEP</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<style>
 		h1 {
-			color: #333;
+			font-size: 28px;
+			font-weight: bold;
 			text-align: center;
-			margin-top: 30px;
+			margin-bottom: 20px;
+			color: #333;
+		}
+		
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
 			margin-bottom: 20px;
 		}
-
-		form {
-			max-width: 500px;
-			margin: 0 auto;
-			padding: 20px;
-			background-color: #fff;
-			border-radius: 5px;
-			box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-		}
-
+		
 		label {
 			display: block;
-			margin-bottom: 5px;
-			color: #555;
-			font-weight: bold;
+			margin-bottom: 10px;
+			color: #333;
 		}
-
+		
 		input[type="text"] {
-			width: 100%;
 			padding: 10px;
-			border-radius: 3px;
-			border: none;
-			box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+			border-radius: 5px;
+			border: 1px solid #ccc;
 			margin-bottom: 20px;
+			width: 100%;
+			box-sizing: border-box;
 		}
-
+		
 		button {
-			background-color: #0077cc;
+			background-color: #0099ff;
 			color: #fff;
-			border: none;
 			padding: 10px 20px;
-			border-radius: 3px;
+			border: none;
+			border-radius: 5px;
+			font-size: 16px;
 			cursor: pointer;
-			transition: background-color 0.3s ease;
+			transition: background-color 0.3s;
 		}
-
+		
 		button:hover {
-			background-color: #005ea5;
+			background-color: #0077cc;
 		}
-
-		.resultado {
+		
+		#endereco {
 			margin-top: 20px;
 			padding: 20px;
 			background-color: #fff;
 			border-radius: 5px;
-			box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 		}
-
-		.resultado p {
-			margin-bottom: 10px;
+		
+		#endereco label {
+			display: inline-block;
+			margin-right: 10px;
+			font-weight: bold;
 			color: #333;
-			font-size: 16px;
-			line-height: 1.5;
+		}
+		
+		#endereco span {
+			font-weight: normal;
+			color: #666;
 		}
 	</style>
 </head>
 <body>
-	<h1>Consulta de CEP</h1>
-	<p>Digite o CEP:</p>
-	<input type="text" id="cepInput">
-	<button onclick="consultarCEP()">Consultar</button>
-
-	<div class="resultado" id="resultado" style="display: none;">
-		<p id="logradouro"></p>
-		<p id="bairro"></p>
-		<p id="localidade"></p>
-		<p id="uf"></p>
+	<div>
+		<label for="cep">CEP:</label>
+		<input type="text" id="cep" name="cep">
+		<button id="buscarEndereco">Buscar Endereço</button>
 	</div>
+	<div id="endereco">
+		<label for="logradouro">Logradouro:</label>
+		<span id="logradouro"></span><br>
+		<label for="bairro">Bairro:</label>
+		<span id="bairro"></span><br>
+		<label for="cidade">Cidade:</label>
+		<span id="cidade"></span><br>
+		<label for="uf">UF:</label>
+		<span id="uf"></span><br>
+	</div>
+
 	<script>
-		function consultarCEP() {
-			let cep = document.getElementById("cepInput").value;
-			fetch(`https://viacep.com.br/ws/${cep}/json/`)
-				.then(response => response.json())
-				.then(data => {
-					document.getElementById("logradouro").textContent = `Logradouro: ${data.logradouro}`;
-					document.getElementById("bairro").textContent = `Bairro: ${data.bairro}`;
-					document.getElementById("localidade").textContent = `Cidade: ${data.localidade}`;
-					document.getElementById("uf").textContent = `Estado: ${data.uf}`;
-				})
-				.catch(error => console.error(error));
-		}
+		$(document).ready(function() {
+			$("#buscarEndereco").click(function() {
+				var cep = $("#cep").val();
+
+				$.ajax({
+					url: "https://viacep.com.br/ws/" + cep + "/json/",
+					type: "GET",
+					dataType: "json",
+					success: function(data) {
+						$("#logradouro").text(data.logradouro);
+						$("#bairro").text(data.bairro);
+						$("#cidade").text(data.localidade);
+						$("#uf").text(data.uf);
+					},
+					error: function() {
+						alert("Erro ao buscar endereço.");
+					}
+				});
+			});
+		});
 	</script>
 </body>
 </html>
