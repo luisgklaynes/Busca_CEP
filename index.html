@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Exemplo de consumo de API do ViaCEP</title>
+	<title>API ViaCEP</title>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<style>
+		*{
+			font-family: Arial, Helvetica, sans-serif;
+		}
 		h1 {
 			font-size: 28px;
 			font-weight: bold;
@@ -71,9 +74,12 @@
 	</style>
 </head>
 <body>
+	<div style="background-color: #0099ff; height: 60px; display: flex; align-items: center; justify-content: center;">
+		<h1 class ="titulo" style="color: #fff;">CONSULTA CEP</h1>
+  </div>
 	<div>
 		<label for="cep">CEP:</label>
-		<input type="text" id="cep" name="cep">
+		<input type="text" id="cep" name="cep"> 
 		<button id="buscarEndereco">Buscar Endereço</button>
 	</div>
 	<div id="endereco">
